@@ -1,16 +1,14 @@
-// import Logo from "../../assets/img/logo.svg"; // Troque depois pelo logo do SuperNova!
-import "./Login.css";
 import { useContext, useEffect, useState } from "react";
-import { UsuarioContext } from "../../context/UsuarioContext.jsx";
-import { SenhaContext } from "../../context/SenhaContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { Alerta } from "../../components/alerta/Alerta.jsx";
-import api from "../../Services/services";
 import { jwtDecode } from "jwt-decode";
+import api from "../../Services/services.js";
+import { UsuarioContext } from "../../context/UsuarioContext.jsx";
+import { Alerta } from "../../components/alerta/Alerta.jsx";
+import "./Login.css";
 
 const Login = () => {
     const { setUsuario } = useContext(UsuarioContext);
-    const [novoEmail, setnovoEmail] = useState(""); 
+    const [novoEmail, setnovoEmail] = useState("");
     const [novoSenha, setnovoSenha] = useState("");
     const navigation = useNavigate();
 
@@ -30,56 +28,54 @@ const Login = () => {
             return;
         }
 
-        const dadoslogin = {
-            Email: novoEmail,
-            Senha: novoSenha,
-        };
+        const dadoslogin = { Email: novoEmail, Senha: novoSenha };
 
         try {
             const retornoAPI = await api.post("/Login", dadoslogin);
             const token = retornoAPI.data.token;
-            
             const usuarioDecoded = jwtDecode(token);
-            setUsuario(usuarioDecoded.email); 
 
+            setUsuario(usuarioDecoded.email);
             localStorage.setItem("Usuario", JSON.stringify(usuarioDecoded.email));
             localStorage.setItem("Token", token);
-            
             navigation("/alimento");
-
         } catch (error) {
-            console.error("Erro na requisição:", error);
-            Alerta({ title: "Erro", text: "Falha ao realizar login.", icon: "error" });
+            Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error" });
         }
     };
 
     return (
         <main className="main_login">
-            <div className="banner"></div>
+            {/* Lado Esquerdo: Banner com a identidade visual */}
+            <div className="banner">
+                
+            </div>
+
+            {/* Lado Direito: Formulário */}
             <section className="section_login">
-                <h1>SuperNova Front</h1>
                 <form onSubmit={realizarLogin} className="form_login">
-                    <h2>LOGIN</h2>
-                    <div className="campos_login">
-                        <div className="campo_input">
-                            <label htmlFor="email">Email:</label>
-                            <input 
-                                onChange={(e) => setnovoEmail(e.target.value)} 
-                                value={novoEmail} 
-                                type="email" 
-                                placeholder="Digite seu e-mail"
-                            />
-                        </div>
-                        <div className="campo_input">
-                            <label htmlFor="senha">Senha:</label>
-                            <input 
-                                onChange={(e) => setnovoSenha(e.target.value)} 
-                                value={novoSenha} 
-                                type="password" 
-                                placeholder="Digite sua senha"
-                            />
-                        </div>
+                    <h2>LOGIN SUPERNOVA</h2>
+                    
+                    <div className="campo_input">
+                        <label>E-mail</label>
+                        <input 
+                            onChange={(e) => setnovoEmail(e.target.value)} 
+                            value={novoEmail} 
+                            type="email" 
+                            placeholder="exemplo@supernova.com"
+                        />
                     </div>
+
+                    <div className="campo_input">
+                        <label>Senha</label>
+                        <input 
+                            onChange={(e) => setnovoSenha(e.target.value)} 
+                            value={novoSenha} 
+                            type="password" 
+                            placeholder="********"
+                        />
+                    </div>
+
                     <button className="botao" type="submit">Entrar</button>
                 </form>
             </section>

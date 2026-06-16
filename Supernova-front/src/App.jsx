@@ -1,4 +1,4 @@
-import Rotas from "./Routes/Routes"
+import Rotas from "./Routes/routes"
 
 function App() {
   return (

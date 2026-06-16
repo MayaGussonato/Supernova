@@ -1,32 +1,30 @@
+import { useEffect, useState } from "react";
+import api from "../../Services/services";
 import "./CadastroAlimento.css";
+
+// Componentes
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Cadastro from "../../components/cadastro/Cadastro";
-import { useEffect, useState } from "react";
-import api from "../../Services/services";
 import Lista from "../../components/lista/Lista";
 import { Alerta } from "../../components/alerta/Alerta";
 
 const CadastroAlimento = () => {
+    // Estados
     const [valor, setValor] = useState("");
     const [idEditar, setIdEditar] = useState(0);
     const [editar, setEditar] = useState(false);
     const [tipoAlimento, setTipoAlimento] = useState("");
     const [imagem, setImagem] = useState("");
-
     const [listaTipos, setListaTipos] = useState([]);
     const [listaAlimentos, setListaAlimentos] = useState([]);
 
+    // Funções
     const cadastrarAlimento = async (e) => {
         e.preventDefault();
         
         if (!valor || String(valor).trim().length === 0) {
-            Alerta({
-                title: "Aviso",
-                text: "O nome do alimento deve ser preenchido!",
-                icon: "warning",
-                confirmButtonText: "Ok",
-            });
+            Alerta({ title: "Aviso", text: "O nome do alimento deve ser preenchido!", icon: "warning", confirmButtonText: "Ok" });
             return false;
         }
 
@@ -41,12 +39,7 @@ const CadastroAlimento = () => {
             });
 
             if (retornoAPI.status === 201) {
-                Alerta({
-                    title: "Sucesso",
-                    text: `Alimento "${valor}" cadastrado com sucesso!`,
-                    icon: "success",
-                    confirmButtonText: "OK"
-                });
+                Alerta({ title: "Sucesso", text: `Alimento "${valor}" cadastrado!`, icon: "success" });
                 limparFormulario();
                 getAlimentos();
             }
@@ -73,7 +66,6 @@ const CadastroAlimento = () => {
 
     const editarAlimento = async (e) => {
         e.preventDefault();
-
         try {
             const formData = new FormData();
             formData.append("Nome", valor);
@@ -81,13 +73,8 @@ const CadastroAlimento = () => {
             formData.append("Imagem", imagem);
 
             const retornoAPI = await api.put(`/Alimento/${idEditar}`, formData);
-
             if (retornoAPI.status === 204 || retornoAPI.status === 200) {
-                Alerta({
-                    title: "Sucesso",
-                    text: `Alimento alterado com sucesso`,
-                    icon: "success",
-                });
+                Alerta({ title: "Sucesso", text: "Alimento alterado!", icon: "success" });
                 limparFormulario();
                 getAlimentos();
             }
@@ -99,31 +86,26 @@ const CadastroAlimento = () => {
     const excluirAlimento = async (item) => {
         const result = await Alerta({
             title: "Excluir",
-            text: `Deseja realmente apagar o item "${item.nome}"?`,
+            text: `Deseja realmente apagar "${item.nome}"?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Apagar",
-            cancelButtonText: "Cancelar",
+            confirmButtonText: "Apagar"
         });
 
-        if (!result || !result.isConfirmed) return false;
-
-        try {
-            const retornoAPI = await api.delete(`/Alimento/${item.idAlimento}`);
-            if (retornoAPI.status === 204 || retornoAPI.status === 200) {
-                limparFormulario();
+        if (result?.isConfirmed) {
+            try {
+                await api.delete(`/Alimento/${item.idAlimento}`);
                 getAlimentos();
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
         }
     };
 
     const getAlimentos = async () => {
         try {
             const retornoAPI = await api.get("/Alimento");
-            const dados = retornoAPI.data;
-            setListaAlimentos(Array.isArray(dados) ? dados : []);
+            setListaAlimentos(Array.isArray(retornoAPI.data) ? retornoAPI.data : []);
         } catch (error) {
             setListaAlimentos([]);
         }
@@ -132,13 +114,7 @@ const CadastroAlimento = () => {
     const getTipos = async () => {
         try {
             const retornoAPI = await api.get("/TipoAlimento");
-            const dados = retornoAPI.data;
-            if (Array.isArray(dados)) {
-                const ordenados = dados.sort((a, b) => a.nome.localeCompare(b.nome));
-                setListaTipos(ordenados);
-            } else {
-                setListaTipos([]);
-            }
+            setListaTipos(Array.isArray(retornoAPI.data) ? retornoAPI.data.sort((a, b) => a.nome.localeCompare(b.nome)) : []);
         } catch (error) {
             setListaTipos([]);
         }
@@ -150,34 +126,35 @@ const CadastroAlimento = () => {
     }, []);
 
     return (
-        <>
+        <div className="supernova-container">
             <Header />
-            <main>
-                <Cadastro
-                    tituloCadastro="Cadastro de Alimentos"
-                    placeholder="Digite o nome do alimento"
-                    valor={valor}
-                    cancelarEdicao={limparFormulario}
-                    setValor={setValor}
-                    funcCadastro={editar ? editarAlimento : cadastrarAlimento}
-                    btnEditar={editar}
-                    listaGeneros={listaTipos} // Passando a lista de categorias mapeada para o componente genérico
-                    setGenero={setTipoAlimento}
-                    genero={tipoAlimento}
-                    setImagem={setImagem}
-                    imagem={imagem}
-                />
+            <main className="supernova-main">
+                <h1 className="supernova-title">Painel de Alimentos — SuperNova</h1>
+                
+                <div className="supernova-card-form">
+                    <Cadastro
+                        tituloCadastro={editar ? "Editar Alimento" : "Cadastrar Novo Alimento"}
+                        funcaoCadastrar={editar ? editarAlimento : cadastrarAlimento}
+                        valor={valor}
+                        setValor={setValor}
+                        listaTipos={listaTipos}
+                        setTipoAlimento={setTipoAlimento}
+                        setImagem={setImagem}
+                        textoBotao={editar ? "Atualizar" : "Cadastrar"}
+                    />
+                </div>
 
-                <Lista
-                    tituloLista="Lista de Alimentos Disponíveis"
-                    lista={listaAlimentos}
-                    tipoLista="filme" // Mantido 'filme' temporariamente para que o componente reaproveite a estrutura de colunas com Imagem, Nome e Categoria
-                    funcExcluir={excluirAlimento}
-                    funcEditar={preEditar}
-                />
+                <div className="supernova-card-lista">
+                    <Lista
+                        tituloLista="Estoque Disponível (Hortifrúti)"
+                        listaDados={listaAlimentos}
+                        funcaoExcluir={excluirAlimento}
+                        funcaoEditar={preEditar}
+                    />
+                </div>
             </main>
             <Footer />
-        </>
+        </div>
     );
 };
 
