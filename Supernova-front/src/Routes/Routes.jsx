@@ -1,6 +1,9 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./privateroute";
 import { AlimentoContext } from "../context/AlimentoContext";
+import CadastroAlimento from "../pages/CadastroAlimento/CadastroAlimento";
+import CadastroTipoAlimento from "../pages/CadastroTipoAlimento/CadastroTipoAlimento";
+import Login from "../pages/login/Login";
 
 const Rotas = () => {
     return (
@@ -9,13 +12,16 @@ const Rotas = () => {
                 <Route element={<Login />} path="/" />
 
                 <Route element={
-                    <PrivateRoute>
-                        <CadastrarAlimento />
-                    </PrivateRoute>
+                    // <PrivateRoute>
+                        <CadastroAlimento />
+                    // </PrivateRoute>
                 } path="/alimento" />
 
-                <Route element={<CadastrarTipoAlimento />} path="/tipoalimentos" />
+                <Route element={<CadastroTipoAlimento />} path="/tipoalimentos" />
             </Routes>
         </BrowserRouter>
     )
 }
+
+
+export default Rotas;

@@ -1,9 +1,9 @@
 import "./Lista.css";
 
 // Importação de imagens:
-import Editar from "../../assets/img/pen-to-square-solid.svg";
-import Excluir from "../../assets/img/trash-can-regular.svg";
-import faltadecartaz from "../../assets/img/logo.svg";
+// import Editar from "../../assets/img/pen-to-square-solid.svg";
+// import Excluir from "../../assets/img/trash-can-regular.svg";
+// import faltadecartaz from "../../assets/img/logo.svg";
 import { apiPort } from "../../Services/services";
 
 const Lista = (props) => {

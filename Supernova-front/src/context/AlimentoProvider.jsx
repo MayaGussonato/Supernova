@@ -17,4 +17,4 @@ export const AlimentoProvider = ({ children }) => {
     );
 };
 
-export default ProdutoProvider;
+export default AlimentoProvider;
