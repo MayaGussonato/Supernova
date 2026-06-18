@@ -24,14 +24,14 @@ const Login = () => {
         e.preventDefault();
 
         if (novoEmail.trim().length === 0 || novoSenha.trim().length === 0) {
-            Alerta({ title: "Erro", text: "Preencha todos os campos!", icon: "error" });
+            Alerta({ title: "Erro", text: "Preencha todos os campos!", icon: "error", confirmButtonText: "OK" });
             return;
         }
 
         const dadoslogin = { Email: novoEmail, Senha: novoSenha };
 
         try {
-            const retornoAPI = await api.post("/Login", dadoslogin);
+            const retornoAPI = await api.post("/login", dadoslogin);
             const token = retornoAPI.data.token;
             const usuarioDecoded = jwtDecode(token);
 
@@ -40,7 +40,7 @@ const Login = () => {
             localStorage.setItem("Token", token);
             navigation("/alimento");
         } catch (error) {
-            Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error" });
+            Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error", confirmButtonText: "OK" });
         }
     };
 
@@ -54,7 +54,7 @@ const Login = () => {
             {/* Lado Direito: Formulário */}
             <section className="section_login">
                 <form onSubmit={realizarLogin} className="form_login">
-                    <h2>LOGIN SUPERNOVA</h2>
+                    <h2>LOGIN</h2>
                     
                     <div className="campo_input">
                         <label>E-mail</label>

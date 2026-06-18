@@ -3,6 +3,10 @@
 # -> id
  */
 header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     background-color: #274699;
 
     height: 75px;
@@ -30,6 +34,10 @@ header{
     color: white;
 
     text-decoration: none;
+}
+
+.nav_header{
+    padding-right: 20px;
 }
 
 @media screen and (max-width: 768px){

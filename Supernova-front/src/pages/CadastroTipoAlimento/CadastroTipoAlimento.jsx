@@ -1,5 +1,5 @@
 import "./CadastroTipoAlimento.css";
-import Header from "../../components/header/Header"; 
+import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Cadastro from "../../components/cadastro/Cadastro";
 import { useEffect, useState } from "react";
@@ -120,31 +120,39 @@ const CadastroTipoAlimento = () => {
     }, []);
 
     return (
-        <>
-            <Header /> 
-            <main>
-                <Cadastro 
-                    tituloCadastro="Cadastro de Tipo de Alimento"
-                    visibilidade="none"
-                    placeholder="Ex: Frutas, Legumes..."
-                    valor={valor}
-                    cancelarEdicao={limparFormulario}
-                    setValor={setValor}
-                    funcCadastro={editar ? editarTipo : cadastroTipoAlimento}
-                    btnEditar={editar}
-                />
+        <div className="supernova-container">
+            <Header />
+            <main className="supernova-main">
+                <h1 className="supernova-title">Painel de Tipo de Alimentos — SuperNova</h1>
 
-                <Lista
-                    tituloLista="Lista de Categorias"
-                    visibilidade="none"
-                    lista={listaTipos}
-                    tipoLista="genero" // Mantido 'genero' se o seu componente interno <Lista> usar essa string para renderizar as colunas corretas de categorias
-                    funcExcluir={excluirTipo}
-                    funcEditar={preEditar}
-                />
+                <div className="supernova-card-form">
+
+                    <Cadastro
+                        tituloCadastro="Cadastro de Tipo de Alimento"
+                        visibilidade="none"
+                        placeholder="Tipo de Alimento"
+                        valor={valor}
+                        cancelarEdicao={limparFormulario}
+                        setValor={setValor}
+                        funcCadastro={editar ? editarTipo : cadastroTipoAlimento}
+                        btnEditar={editar}
+                    />
+                </div>
+                <div className="supernova-card-lista">
+
+                    <Lista
+                        tituloLista="Lista de Categorias"
+                        visibilidade="none"
+                        lista={listaTipos}
+                        tipoLista="genero" // Mantido 'genero' se o seu componente interno <Lista> usar essa string para renderizar as colunas corretas de categorias
+                        funcExcluir={excluirTipo}
+                        funcEditar={preEditar}
+                    />
+                </div>
             </main>
             <Footer />
-        </>
+        </div>
+
     );
 };
 

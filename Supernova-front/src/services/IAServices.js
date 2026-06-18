@@ -1,4 +1,4 @@
-import api from "./Services";
+import api from "../services.js";
 
 const API_KEY = "";
 
@@ -12,7 +12,7 @@ export const gerarResumo = async (titulo, descricao = "") => {
           {
             role: "user",
             content: `
-              Faça um resumo simples do filme abaixo:
+              Faça um resumo simples do alimento abaixo:
 
               Título: ${titulo}
             `,

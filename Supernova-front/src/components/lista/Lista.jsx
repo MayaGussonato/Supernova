@@ -33,33 +33,33 @@ const Lista = (props) => {
                             {props.lista && props.lista.length > 0 ? (
                                 // Se houver itens, faz um map (laço) para renderizar cada item da lista
                                 props.lista.map((item) => (
-                                    <tr className="item_lista" key={props.tipoLista === "filme" ? item.idFilme : item.idGenero}>
+                                    <tr className="item_lista" key={props.tipoLista === "alimento" ? item.idAlimento : item.idTipoAlimento}>
                                         {/* {console.log(index)} */}
                                         {/* {console.log(item.idGenero)} */}
                                         <td data-cell="Imagem" style={{ display: props.visibilidade }}>
                                             {/* Primeira célula da linha: mostra o nome (se for gênero) ou título (se for filme) */}
                                             {/* titulo == filme */}
                                             {/* {props.tipoLista === "genero" ? item.nome : item.titulo} */}
-                                            <img className="img_cartaz" src={(`https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/null` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/undefined`) ? faltadecartaz : `https://localhost:${apiPort}/imagens/${item.imagem}` } alt="" />
+                                            <img className="img_cartaz" src={(`https://localhost:${apiPort}/imagens/${item.imagem}` == /*`https://localhost:${apiPort}/imagens/` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/null` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/undefined`) ? faltadecartaz : `https://localhost:${apiPort}/imagens/${item.imagem}`*/ "")} alt="" />
                                         </td>
                                         <td data-cell="Nome">
                                             {/* Primeira célula da linha: mostra o nome (se for gênero) ou título (se for filme) */}
                                             {/* titulo == filme */}
-                                            {props.tipoLista === "genero" ? item.nome : item.titulo}
+                                            {props.tipoLista === "tipoAlimento" ? item.nome : item.titulo}
                                         </td>
-                                        <td data-cell="Gênero" style={{ display: props.visibilidade }}>
+                                        <td data-cell="TipoAlimento" style={{ display: props.visibilidade }}>
                                             {/* Segunda célula: mostra o nome do gênero caso o tipo da lista seja "filme".*/}
                                             {/* adicionar essa linha depois de fazer o metd de lista filme: */}
-                                            {props.tipoLista === "filme" ? (item.idGeneroNavigation?.nome || '-') : '-'}
+                                            {props.tipoLista === "alimento" ? (item.idTipoAlimentoNavigation?.nome || '-') : '-'}
                                         </td>
                                         <td data-cell="Editar">
                                             <button className="icon" onClick={() => (props.funcEditar(item))}>
-                                                <img src={Editar} alt="Caneta" />
+                                                {/* <img src={Editar} alt="Caneta" /> */}
                                             </button>
                                         </td>
                                         <td data-cell="Excluir">
                                             <button className="icon" onClick={() => props.funcExcluir(item)}>
-                                                <img src={Excluir} alt="Lixeira" />
+                                                {/* <img src={Excluir} alt="Lixeira" /> */}
                                             </button>
                                         </td>
                                     </tr>

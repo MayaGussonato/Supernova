@@ -135,6 +135,7 @@ const CadastroAlimento = () => {
                     <Cadastro
                         tituloCadastro={editar ? "Editar Alimento" : "Cadastrar Novo Alimento"}
                         funcaoCadastrar={editar ? editarAlimento : cadastrarAlimento}
+                        placeholder="Alimento"
                         valor={valor}
                         setValor={setValor}
                         listaTipos={listaTipos}

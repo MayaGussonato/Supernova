@@ -21,15 +21,15 @@
     align-items: center;
     justify-content: center;
     background-color: #FFFFFF;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .form_login {
     width: 100%;
     max-width: 400px;
-    padding: 30px;
+    /* padding: 30px; */
     background: #f9f9f9;
-    border-radius: 12px;
+    border-radius: 12px;    
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 

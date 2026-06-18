@@ -9,8 +9,7 @@ export const Alerta = ({
     showCancelButton = null,
     confirmButtonText = null,
     confirmButtonColor = "#33d630ff",
-    cancelButtonColor = "#d33"
-
+    cancelButtonColor = "#d33",
 }) => {
     return Swal.fire({
         tilte: tilte,

@@ -27,11 +27,22 @@
 
 .campos_cadastro{
     display: flex;
-    padding-top: 60px;
+    padding-top: 25px;
 
     gap: 25px;
 
     align-items: flex-end;
+}
+
+.linha-btn{
+    display: flex;
+    justify-content: center;
+    
+    padding-top: 25px;
+
+    gap: 25px;
+
+    /* align-items: flex-end; */
 }
 
 
