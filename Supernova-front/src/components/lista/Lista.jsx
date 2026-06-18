@@ -1,8 +1,12 @@
-import "./Lista.css";
+import "./lista.css"; 
 
-// Importação de imagens:
-// import Editar from "../../assets/img/pen-to-square-solid.svg";
-// import Excluir from "../../assets/img/trash-can-regular.svg";
+// Importação de imagens: 
+// // import Editar from "../../assets/img/pen-to-square-solid.svg"; 
+// // import Excluir from "../../assets/img/trash-can-regular.svg"; 
+// // import faltadecartaz from "../../assets/img/logo.svg"; 
+// import { apiPort } from "../../Services/services";
+
+
 // import faltadecartaz from "../../assets/img/logo.svg";
 import { apiPort } from "../../Services/services";
 
@@ -13,13 +17,11 @@ const Lista = (props) => {
 
                 <h1>{props.tituloLista}</h1>
                 <hr />
+
                 <div className="tabela">
                     <table>
-                        {/* cabeçalho da tabela: */}
                         <thead>
-                            {/* tr => table row */}
                             <tr className="table_cabecalho">
-                                {/* th => table head */}
                                 <th style={{ display: props.visibilidade }}>Imagem</th>
                                 <th>Nome</th>
                                 <th style={{ display: props.visibilidade }}>Gênero</th>
@@ -27,58 +29,82 @@ const Lista = (props) => {
                                 <th>Excluir</th>
                             </tr>
                         </thead>
-                        {/* tbody => corpo da tabela */}
+
                         <tbody>
-                            {/* Verifica se a lista existe e tem itens */}
                             {props.lista && props.lista.length > 0 ? (
-                                // Se houver itens, faz um map (laço) para renderizar cada item da lista
                                 props.lista.map((item) => (
-                                    <tr className="item_lista" key={props.tipoLista === "alimento" ? item.idAlimento : item.idTipoAlimento}>
-                                        {/* {console.log(index)} */}
-                                        {/* {console.log(item.idGenero)} */}
-                                        <td data-cell="Imagem" style={{ display: props.visibilidade }}>
-                                            {/* Primeira célula da linha: mostra o nome (se for gênero) ou título (se for filme) */}
-                                            {/* titulo == filme */}
-                                            {/* {props.tipoLista === "genero" ? item.nome : item.titulo} */}
-                                            <img className="img_cartaz" src={(`https://localhost:${apiPort}/imagens/${item.imagem}` == /*`https://localhost:${apiPort}/imagens/` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/null` || `https://localhost:${apiPort}/imagens/${item.imagem}` == `https://localhost:${apiPort}/imagens/undefined`) ? faltadecartaz : `https://localhost:${apiPort}/imagens/${item.imagem}`*/ "")} alt="" />
+                                    <tr
+                                        className="item_lista"
+                                        key={
+                                            props.tipoLista === "alimento"
+                                                ? item.idAlimento
+                                                : item.idTipoAlimento
+                                        }
+                                    >
+                                        <td
+                                            data-cell="Imagem"
+                                            style={{ display: props.visibilidade }}
+                                        >
+                                            <img
+                                                className="img_cartaz"
+                                                src={
+                                                    item.imagem &&
+                                                    item.imagem !== "null" &&
+                                                    item.imagem !== "undefined"
+                                                        ? `https://localhost:${apiPort}/imagens/${item.imagem}`
+                                                        : undefined
+                                                }
+                                                alt={item.nome || "Imagem"}
+                                            />
                                         </td>
+
                                         <td data-cell="Nome">
-                                            {/* Primeira célula da linha: mostra o nome (se for gênero) ou título (se for filme) */}
-                                            {/* titulo == filme */}
-                                            {props.tipoLista === "tipoAlimento" ? item.nome : item.titulo}
+                                            {props.tipoLista === "tipoAlimento"
+                                                ? item.nome
+                                                : item.nome}
                                         </td>
-                                        <td data-cell="TipoAlimento" style={{ display: props.visibilidade }}>
-                                            {/* Segunda célula: mostra o nome do gênero caso o tipo da lista seja "filme".*/}
-                                            {/* adicionar essa linha depois de fazer o metd de lista filme: */}
-                                            {props.tipoLista === "alimento" ? (item.idTipoAlimentoNavigation?.nome || '-') : '-'}
+
+                                        <td
+                                            data-cell="TipoAlimento"
+                                            style={{ display: props.visibilidade }}
+                                        >
+                                            {props.tipoLista === "alimento"
+                                                ? item.idTipoAlimentoNavigation?.nome || "-"
+                                                : "-"}
                                         </td>
+
                                         <td data-cell="Editar">
-                                            <button className="icon" onClick={() => (props.funcEditar(item))}>
-                                                {/* <img src={Editar} alt="Caneta" /> */}
+                                            <button
+                                                className="icon"
+                                                onClick={() => props.funcEditar(item)}
+                                            >
+                                                Editar
                                             </button>
                                         </td>
+
                                         <td data-cell="Excluir">
-                                            <button className="icon" onClick={() => props.funcExcluir(item)}>
-                                                {/* <img src={Excluir} alt="Lixeira" /> */}
+                                            <button
+                                                className="icon"
+                                                onClick={() => props.funcExcluir(item)}
+                                            >
+                                                Excluir
                                             </button>
                                         </td>
                                     </tr>
-                                )) 
+                                ))
                             ) : (
-                                    // Caso a lista esteja vazia ou não exista, mostra uma linha dizendo que não há registros
-                                    <tr>
-                                        <td>Nenhum registro encontrado.</td>
-                                    </tr>
-                                )
-                            }
-                                
-                        
+                                <tr>
+                                    <td colSpan="5">
+                                        Nenhum registro encontrado.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};
 
 export default Lista;

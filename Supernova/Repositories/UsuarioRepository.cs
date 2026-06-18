@@ -1,4 +1,5 @@
 ﻿using Supernova.BdContextConnct;
+using Supernova.DTO;
 using Supernova.Interfaces;
 using Supernova.Models;
 
@@ -53,6 +54,17 @@ namespace Supernova.Repositories
                 _context.Usuarios.Remove(usuarioBuscado);
                 _context.SaveChanges();
             }
+        }
+
+        public Usuario BuscarPorEmailSenha(string email, string senha)
+        {
+            return _context.Usuarios.FirstOrDefault
+            (
+                u => u.Email == email &&
+                     u.Senha == senha
+            );
+
+
         }
     }
 }

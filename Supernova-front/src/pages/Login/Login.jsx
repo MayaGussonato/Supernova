@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import api from "../../Services/services.js";
+import api from "../../services/services.js";
 import { UsuarioContext } from "../../context/UsuarioContext.jsx";
 import { Alerta } from "../../components/alerta/Alerta.jsx";
 import "./Login.css";
@@ -16,7 +16,7 @@ const Login = () => {
         const logado = JSON.parse(localStorage.getItem("Usuario"));
         if (logado) {
             setUsuario(logado);
-            navigation("/alimento");
+            navigation("/home");
         }
     }, [navigation, setUsuario]);
 
@@ -38,7 +38,7 @@ const Login = () => {
             setUsuario(usuarioDecoded.email);
             localStorage.setItem("Usuario", JSON.stringify(usuarioDecoded.email));
             localStorage.setItem("Token", token);
-            navigation("/alimento");
+            navigation("/home");
         } catch (error) {
             Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error", confirmButtonText: "OK" });
         }
@@ -48,35 +48,47 @@ const Login = () => {
         <main className="main_login">
             {/* Lado Esquerdo: Banner com a identidade visual */}
             <div className="banner">
-                
+
             </div>
 
             {/* Lado Direito: Formulário */}
             <section className="section_login">
                 <form onSubmit={realizarLogin} className="form_login">
                     <h2>LOGIN</h2>
-                    
+
                     <div className="campo_input">
                         <label>E-mail</label>
-                        <input 
-                            onChange={(e) => setnovoEmail(e.target.value)} 
-                            value={novoEmail} 
-                            type="email" 
+                        <input
+                            onChange={(e) => setnovoEmail(e.target.value)}
+                            value={novoEmail}
+                            type="email"
                             placeholder="exemplo@supernova.com"
                         />
                     </div>
 
                     <div className="campo_input">
                         <label>Senha</label>
-                        <input 
-                            onChange={(e) => setnovoSenha(e.target.value)} 
-                            value={novoSenha} 
-                            type="password" 
+                        <input
+                            onChange={(e) => setnovoSenha(e.target.value)}
+                            value={novoSenha}
+                            type="password"
                             placeholder="********"
                         />
                     </div>
 
                     <button className="botao" type="submit">Entrar</button>
+
+                    <p className="textoCadastro">
+                        Não possui conta?
+                    </p>
+
+                    <button
+                        type="button"
+                        className="botaoCadastro"
+                        onClick={() => navigation("/cadastro")}
+                    >
+                        Criar Conta
+                    </button>
                 </form>
             </section>
         </main>

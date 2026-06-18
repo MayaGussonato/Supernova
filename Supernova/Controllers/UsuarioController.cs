@@ -39,7 +39,8 @@ namespace Supernova.Controllers
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Senha = dto.Senha
+                Senha = dto.Senha,
+                TipoUsuario = dto.TipoUsuario
             };
 
             _usuarioRepository.Cadastrar(usuario);

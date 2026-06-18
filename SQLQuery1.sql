@@ -17,6 +17,9 @@ create table Usuario(
 	Senha varchar(60) not null,
 );
 
+ALTER TABLE Usuario
+ADD TipoUsuario VARCHAR(20);
+
 create table Alimento(
 	IdAlimento uniqueIdentifier primary key default ((newId())),
 	Nome varchar(100) not null,
@@ -26,3 +29,14 @@ create table Alimento(
 	
 	IdTipoAlimento uniqueidentifier foreign key references TipoAlimento (IdTipoAlimento),
 );
+
+UPDATE Usuario
+SET TipoUsuario = 'Admin'
+WHERE Email = 'walyson.m.sousa@aluno.senai.br';
+
+UPDATE Usuario
+SET TipoUsuario = 'Cliente'
+WHERE TipoUsuario IS NULL;
+
+SELECT Nome, Email, TipoUsuario
+FROM Usuario;

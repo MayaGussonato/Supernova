@@ -24,4 +24,6 @@ public partial class Usuario
     [StringLength(60)]
     [Unicode(false)]
     public string Senha { get; set; } = null!;
+
+    public string TipoUsuario { get; set; } // Admin ou Cliente
 }
