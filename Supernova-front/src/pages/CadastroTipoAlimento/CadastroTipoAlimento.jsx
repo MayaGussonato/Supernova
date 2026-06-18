@@ -13,7 +13,7 @@ const CadastroTipoAlimento = () => {
     const [editar, setEditar] = useState(false);
     const [listaTipos, setListaTipos] = useState([]);
 
-    const CadastroTipoAlimento = async (e) => {
+    const cadastroTipoAlimento = async (e) => {
         e.preventDefault();
         if (valor.trim().length === 0) {
             Alerta({
@@ -130,7 +130,7 @@ const CadastroTipoAlimento = () => {
                     valor={valor}
                     cancelarEdicao={limparFormulario}
                     setValor={setValor}
-                    funcCadastro={editar ? editarTipo : cadastrarTipo}
+                    funcCadastro={editar ? editarTipo : cadastroTipoAlimento}
                     btnEditar={editar}
                 />
 

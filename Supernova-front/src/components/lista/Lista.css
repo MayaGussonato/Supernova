@@ -21,7 +21,7 @@
     width: 100%;
     border-style: solid;
     border-width: 1px;
-    border-color: #73061B;
+    border-color: #063273;
     margin-top: 5px;
 }
 
@@ -115,7 +115,7 @@ img.img_cartaz{
     height: 30px;
     border: none;
     cursor: pointer;
-    background-color: #73061B;
+    background-color: #063273;
     color: white;
     border-radius: 6px;
     /* Negrito */

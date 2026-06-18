@@ -17,7 +17,7 @@ const Rotas = () => {
                     // </PrivateRoute>
                 } path="/alimento" />
 
-                <Route element={<CadastroTipoAlimento />} path="/tipoalimentos" />
+                <Route element={<CadastroTipoAlimento />} path="/tipoalimento" />
             </Routes>
         </BrowserRouter>
     )

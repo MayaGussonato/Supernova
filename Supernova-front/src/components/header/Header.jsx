@@ -8,12 +8,12 @@ const Header = () => {
             <div className="layout_grid cabecalho">
                 {/* Ao clicar no link, redireciona para a tela login */}
                 <Link to="/">
-                    <img src={Logo} alt="Logo do Filmoteca" />
+                    {/* <img src={Logo} alt="Logo do Filmoteca" /> */}
                 </Link>
 
                 <nav className="nav_header">
-                    <Link className="link_header" to="/filme">Filme</Link>
-                    <Link className="link_header" to="/genero">Gênero</Link>
+                    <Link className="link_header" to="/alimento">Alimentos</Link>
+                    <Link className="link_header" to="/tipoalimento">Tipo de Alimento</Link>
                 </nav>
             </div>
         </header>
