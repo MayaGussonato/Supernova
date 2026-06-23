@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../../services/services";
 import "./home.css";
-import Header from "../../components/header/Header";
 
 import logo from "../../assets/img/logo.png";
+
 export const Home = () => {
     const [alimentos, setAlimentos] = useState([]);
     const [pesquisa, setPesquisa] = useState("");
+    const [resultadoIA, setResultadoIA] = useState("");
 
     const buscarAlimentos = async () => {
         try {
@@ -19,16 +20,14 @@ export const Home = () => {
 
     const buscarTabelaNutricional = async (nome) => {
         try {
-            const resposta = await api.post(
-                "/ia/nutricional",
-                {
-                    alimento: nome,
-                }
-            );
+            const resposta = await api.post("/ia/nutricional", {
+                alimento: nome,
+            });
 
-            alert(resposta.data);
+            setResultadoIA(resposta.data);
         } catch (error) {
             console.log(error);
+            setResultadoIA("Erro ao gerar a tabela nutricional.");
         }
     };
 
@@ -37,9 +36,9 @@ export const Home = () => {
     }, []);
 
     const alimentosFiltrados = alimentos.filter((item) =>
-        item.nome
-            .toLowerCase()
-            .includes(pesquisa.toLowerCase())
+        item.nome.toLowerCase().includes(
+            pesquisa.toLowerCase()
+        )
     );
 
     return (
@@ -47,29 +46,44 @@ export const Home = () => {
 
             {/* HEADER */}
             <header className="header">
+                <img
+                    src={logo}
+                    alt="Supernova"
+                    className="logo"
+                />
 
-    <img
-        src={logo}
-        alt="Supernova"
-        className="logo"
-    />
-
-    <input
-        type="text"
-        placeholder="🔍 Pesquisar alimentos..."
-        value={pesquisa}
-        onChange={(e) =>
-            setPesquisa(e.target.value)
-        }
-        className="input-pesquisa"
-    />
-
-</header>
+                <input
+                    type="text"
+                    placeholder="🔍 Pesquisar alimentos..."
+                    value={pesquisa}
+                    onChange={(e) =>
+                        setPesquisa(e.target.value)
+                    }
+                    className="input-pesquisa"
+                />
+            </header>
 
             {/* CONTEÚDO */}
             <main className="conteudo">
 
                 <h2>Catálogo de Alimentos</h2>
+
+                {resultadoIA && (
+                    <div className="resultado-ia">
+                        <h3>Tabela Nutricional IA</h3>
+
+                        <pre>{resultadoIA}</pre>
+
+                        <button
+                            className="btn-fechar"
+                            onClick={() =>
+                                setResultadoIA("")
+                            }
+                        >
+                            Fechar
+                        </button>
+                    </div>
+                )}
 
                 <div className="lista-produtos">
 
@@ -79,7 +93,6 @@ export const Home = () => {
                                 className="card-produto"
                                 key={item.idAlimento}
                             >
-
                                 <img
                                     src={
                                         item.imagem ||
