@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. Importe o hook de navegação
 import api from "../../services/services";
@@ -60,7 +59,7 @@ export const Home = () => {
 
                 <input
                     type="text"
-                    placeholder=" Pesquisar alimentos..."
+                    placeholder="🔍 Pesquisar alimentos..."
                     value={pesquisa}
                     onChange={(e) => setPesquisa(e.target.value)}
                     className="input-pesquisa"
@@ -129,5 +128,3 @@ export const Home = () => {
         </div>
     );
 };
-
-

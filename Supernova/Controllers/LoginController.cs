@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Supernova.DTO;
 using Supernova.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Supernova.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class LoginController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -16,28 +19,70 @@ namespace Supernova.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginDTO dto)
+        public IActionResult Login(LoginDTO loginDto)
         {
-            var usuario = _usuarioRepository.BuscarPorEmailSenha(
-                dto.Email,
-                dto.Senha
-            );
-
-            if (usuario == null)
+            try
             {
-                return Unauthorized(new
+                var usuarioBuscado = _usuarioRepository.BuscarPorEmailSenha(
+                    loginDto.Email,
+                    loginDto.Senha
+                );
+
+                if (usuarioBuscado == null)
                 {
-                    mensagem = "Email ou senha inválidos"
+                    return NotFound("Email ou Senha Inválidos!");
+                }
+
+                // Claims do token
+                var claims = new[]
+                {
+                    new Claim(
+                        JwtRegisteredClaimNames.Jti,
+                        usuarioBuscado.IdUsuario.ToString()
+                    ),
+
+                    new Claim(
+                        JwtRegisteredClaimNames.Email,
+                        usuarioBuscado.Email
+                    ),
+
+                    new Claim(
+                        "TipoUsuario",
+                        usuarioBuscado.TipoUsuario
+                    )
+                };
+
+                // Chave do token
+                var key = new SymmetricSecurityKey(
+                    System.Text.Encoding.UTF8.GetBytes(
+                        "supernova-chave-autenticacao-webapi-dev"
+                    )
+                );
+
+                // Credenciais
+                var creds = new SigningCredentials(
+                    key,
+                    SecurityAlgorithms.HmacSha256
+                );
+
+                // Token
+                var token = new JwtSecurityToken(
+                    issuer: "api_supernova",
+                    audience: "api_supernova",
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(60),
+                    signingCredentials: creds
+                );
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
-
-            return Ok(new
+            catch (Exception erro)
             {
-                idUsuario = usuario.IdUsuario,
-                nome = usuario.Nome,
-                email = usuario.Email,
-                tipoUsuario = usuario.TipoUsuario
-            });
+                return BadRequest(erro.Message);
+            }
         }
     }
 }
