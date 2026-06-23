@@ -13,11 +13,25 @@ const Login = () => {
     const [novoSenha, setnovoSenha] = useState("");
     const navigation = useNavigate();
 
+    // 1. Verifica se já está logado e manda para a tela correta ao carregar a página
     useEffect(() => {
         const logado = JSON.parse(localStorage.getItem("Usuario"));
-        if (logado) {
+        const token = localStorage.getItem("Token");
+
+        if (logado && token) {
             setUsuario(logado);
-            navigation("/home");
+            try {
+                const usuarioDecoded = jwtDecode(token);
+                // Verifica a Role salva no token
+                if (usuarioDecoded.role === "admin") {
+                    navigation("/alimento");
+                } else {
+                    navigation("/home");
+                }
+            } catch (err) {
+                // Se o token estiver expirado ou inválido, limpa tudo
+                localStorage.clear();
+            }
         }
     }, [navigation, setUsuario]);
 
@@ -34,13 +48,24 @@ const Login = () => {
         try {
             const retornoAPI = await api.post("/login", dadoslogin);
             const token = retornoAPI.data.token;
+            
+            // Descriptografa o Token vindo da API
             const usuarioDecoded = jwtDecode(token);
 
             setUsuario(usuarioDecoded.email);
             localStorage.setItem("Usuario", JSON.stringify(usuarioDecoded.email));
             localStorage.setItem("Token", token);
-            navigation("/home");
+            
+            // 2. Redirecionamento condicional baseado na CLAIM de Role do Token
+            // Nota: Se no seu console.log o nome vier diferente de "role" (ex: "tipoUsuario"), mude aqui.
+            if (usuarioDecoded.role === "admin") {
+                navigation("/alimento");
+            } else {
+                navigation("/home");
+            }
+
         } catch (error) {
+            console.error(error);
             Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error", confirmButtonText: "OK" });
         }
     };
@@ -55,8 +80,6 @@ const Login = () => {
                     className="logoSupernova"
                 />
             </div>
-
-
 
             {/* Lado Direito: Formulário */}
             <section className="section_login">
