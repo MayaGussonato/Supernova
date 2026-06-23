@@ -5,6 +5,7 @@ import api from "../../services/services.js";
 import { UsuarioContext } from "../../context/UsuarioContext.jsx";
 import { Alerta } from "../../components/alerta/Alerta.jsx";
 import "./Login.css";
+import logo from "../../assets/img/Supernova.jpg";
 
 const Login = () => {
     const { setUsuario } = useContext(UsuarioContext);
@@ -43,13 +44,19 @@ const Login = () => {
             Alerta({ title: "Erro", text: "Credenciais inválidas.", icon: "error", confirmButtonText: "OK" });
         }
     };
-
+      
     return (
         <main className="main_login">
             {/* Lado Esquerdo: Banner com a identidade visual */}
             <div className="banner">
-
+                <img
+                    src={logo}
+                    alt="Logo Supernova"
+                    className="logoSupernova"
+                />
             </div>
+
+
 
             {/* Lado Direito: Formulário */}
             <section className="section_login">
