@@ -3,7 +3,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Cadastro from "../../components/cadastro/Cadastro";
 import { useEffect, useState } from "react";
-import api from "../../Services/services";
+import api from "../../services/services";
 import Lista from "../../components/lista/Lista";
 import { Alerta } from "../../components/alerta/Alerta";
 

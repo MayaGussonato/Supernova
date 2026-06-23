@@ -16,6 +16,7 @@ namespace Supernova.Repositories
 
         public void Cadastrar(Alimento alimento)
         {
+
             _context.Alimentos.Add(alimento);
             _context.SaveChanges();
         }
@@ -25,6 +26,9 @@ namespace Supernova.Repositories
             return _context.Alimentos
                 .Include(a => a.IdTipoAlimentoNavigation)
                 .ToList();
+            //return _context.Alimentos
+            //    .Include(a => a.IdTipoAlimentoNavigation)
+            //    .ToList();
         }
 
         public Alimento BuscarPorId(Guid id)

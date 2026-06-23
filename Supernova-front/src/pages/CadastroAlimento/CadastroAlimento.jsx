@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../Services/services";
+import api from "../../services/services.js";
 import "./CadastroAlimento.css";
 
 // Componentes
@@ -15,6 +15,8 @@ const CadastroAlimento = () => {
     const [idEditar, setIdEditar] = useState(0);
     const [editar, setEditar] = useState(false);
     const [tipoAlimento, setTipoAlimento] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [preco, setPreco] = useState("");
     const [imagem, setImagem] = useState("");
     const [listaTipos, setListaTipos] = useState([]);
     const [listaAlimentos, setListaAlimentos] = useState([]);
@@ -30,13 +32,13 @@ const CadastroAlimento = () => {
 
         const formData = new FormData();
         formData.append("Nome", valor);
-        formData.append("idTipoAlimento", tipoAlimento);
+        formData.append("Descricao", descricao);
+        formData.append("Preco", preco);
+        formData.append("IdTipoAlimento", tipoAlimento);
         formData.append("Imagem", imagem);
 
-        try {
-            const retornoAPI = await api.post("/Alimento", formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            });
+            try {
+            const retornoAPI = await api.post("/Alimento", formData);
 
             if (retornoAPI.status === 201) {
                 Alerta({ title: "Sucesso", text: `Alimento "${valor}" cadastrado!`, icon: "success" });
@@ -50,6 +52,8 @@ const CadastroAlimento = () => {
 
     const limparFormulario = () => {
         setValor("");
+        setDescricao("");
+        setPreco("");
         setEditar(false);
         setIdEditar(0);
         setTipoAlimento("");
@@ -59,6 +63,8 @@ const CadastroAlimento = () => {
     const preEditar = (item) => {
         setIdEditar(item.idAlimento);
         setValor(item.nome || item.titulo);
+        setDescricao(item.descricao || "");
+        setPreco(item.preco ?? "");
         setTipoAlimento(item.idTipoAlimento);
         setImagem(item.imagem);
         setEditar(true);
@@ -67,12 +73,18 @@ const CadastroAlimento = () => {
     const editarAlimento = async (e) => {
         e.preventDefault();
         try {
-            const formData = new FormData();
-            formData.append("Nome", valor);
-            formData.append("idTipoAlimento", tipoAlimento);
-            formData.append("Imagem", imagem);
+            const payload = {
+                nome: valor,
+                descricao,
+                preco: Number(preco) || 0,
+                idTipoAlimento: tipoAlimento,
+            };
 
-            const retornoAPI = await api.put(`/Alimento/${idEditar}`, formData);
+            if (typeof imagem === "string" && imagem.length > 0) {
+                payload.imagem = imagem;
+            }
+
+            const retornoAPI = await api.put(`/Alimento/${idEditar}`, payload);
             if (retornoAPI.status === 204 || retornoAPI.status === 200) {
                 Alerta({ title: "Sucesso", text: "Alimento alterado!", icon: "success" });
                 limparFormulario();
@@ -126,36 +138,44 @@ const CadastroAlimento = () => {
     }, []);
 
     return (
-        <div className="supernova-container">
-            <Header />
-            <main className="supernova-main">
-                <h1 className="supernova-title">Painel de Alimentos — SuperNova</h1>
-                
-                <div className="supernova-card-form">
+    <div className="supernova-container">
+        <Header />
+        <main className="supernova-main">
+            <h1 className="supernova-title">Painel de Alimentos — SuperNova</h1>
+            
+            {/* Deixe o card original por fora, sem nenhum wrapper em volta do Cadastro */}
+            <div className="supernova-card-form">
                     <Cadastro
                         tituloCadastro={editar ? "Editar Alimento" : "Cadastrar Novo Alimento"}
-                        funcaoCadastrar={editar ? editarAlimento : cadastrarAlimento}
+                        funcCadastro={editar ? editarAlimento : cadastrarAlimento}
                         placeholder="Alimento"
                         valor={valor}
                         setValor={setValor}
-                        listaTipos={listaTipos}
-                        setTipoAlimento={setTipoAlimento}
+                        descricao={descricao}
+                        setDescricao={setDescricao}
+                        preco={preco}
+                        setPreco={setPreco}
+                        listaGeneros={listaTipos}
+                        genero={tipoAlimento}
+                        setGenero={setTipoAlimento}
                         setImagem={setImagem}
-                        textoBotao={editar ? "Atualizar" : "Cadastrar"}
+                        btnEditar={editar}
+                        cancelarEdicao={limparFormulario}
                     />
-                </div>
+            </div>
 
-                <div className="supernova-card-lista">
-                    <Lista
-                        tituloLista="Estoque Disponível (Hortifrúti)"
-                        listaDados={listaAlimentos}
-                        funcaoExcluir={excluirAlimento}
-                        funcaoEditar={preEditar}
-                    />
-                </div>
-            </main>
-            <Footer />
-        </div>
+            <div className="supernova-card-lista">
+                <Lista
+                    tituloLista="Estoque Disponível (Hortifrúti)"
+                    lista={listaAlimentos}
+                    tipoLista="alimento"
+                    funcExcluir={excluirAlimento}
+                    funcEditar={preEditar}
+                />
+            </div>
+        </main>
+        <Footer />
+    </div>
     );
 };
 

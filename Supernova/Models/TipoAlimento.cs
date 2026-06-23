@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Supernova.Models;
@@ -17,5 +18,6 @@ public partial class TipoAlimento
     public string Nome { get; set; } = null!;
 
     [InverseProperty("IdTipoAlimentoNavigation")]
+    [JsonIgnore]
     public virtual ICollection<Alimento> Alimentos { get; set; } = new List<Alimento>();
 }

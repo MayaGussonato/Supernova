@@ -1,0 +1,14 @@
+.section_cadastro {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #274699;
+    
+    padding: 50px 0;
+}
+
+.section_cadastro {
+    background-color: #274699;
+    /* color: white; */
+    padding: 50px 0;
+}

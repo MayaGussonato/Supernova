@@ -6,7 +6,7 @@
 
         public string Descricao { get; set; }
 
-        public string? Imagem { get; set; }
+        public IFormFile? Imagem { get; set; }
 
         public decimal Preco { get; set; }
 

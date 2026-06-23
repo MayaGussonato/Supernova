@@ -2,6 +2,7 @@
 using Supernova.DTO;
 using Supernova.Interfaces;
 using Supernova.Models;
+using static System.Net.WebRequestMethods;
 
 namespace Supernova.Controllers
 {
@@ -34,20 +35,50 @@ namespace Supernova.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(AlimentoDTO dto)
+        public async Task<IActionResult> Post([FromForm]AlimentoDTO dto)
         {
-            Alimento alimento = new Alimento
+
+            if (String.IsNullOrWhiteSpace(dto.Nome) || dto.IdTipoAlimento == null)
+                return BadRequest("É obrigatório que o Alimento tenha Nome e Gênero");
+
+            Alimento novoAlimento = new Alimento();
+
+            if (dto.Imagem != null && dto.Imagem.Length != 0)
             {
-                Nome = dto.Nome,
-                Descricao = dto.Descricao,
-                Imagem = dto.Imagem,
-                Preco = dto.Preco,
-                IdTipoAlimento = dto.IdTipoAlimento
-            };
+                var extensao = Path.GetExtension(dto.Imagem.FileName);
+                var nomeArquivo = $"{Guid.NewGuid()}{extensao}";
 
-            _alimentoRepository.Cadastrar(alimento);
+                var pastaRelativa = "wwwroot/imagens";
+                var caminhoPasta = Path.Combine(Directory.GetCurrentDirectory(), pastaRelativa);
 
-            return StatusCode(201);
+                //Garante que a pasta exista
+                if (!Directory.Exists(caminhoPasta))
+                    Directory.CreateDirectory(caminhoPasta);
+
+                var caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);
+
+                using (var stream = new FileStream(caminhoCompleto, FileMode.Create))
+                {
+                    await dto.Imagem.CopyToAsync(stream);
+                }
+
+                novoAlimento.Imagem = nomeArquivo;
+            }
+
+            novoAlimento.IdTipoAlimento = dto.IdTipoAlimento;
+            novoAlimento.Nome = dto.Nome;
+            novoAlimento.Descricao = dto.Descricao;
+            novoAlimento.Preco = dto.Preco;
+
+            try
+            {
+                _alimentoRepository.Cadastrar(novoAlimento);
+                return StatusCode(201);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("{id}")]
