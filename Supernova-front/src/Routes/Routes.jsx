@@ -11,10 +11,7 @@ const Rotas = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route
-                    path="/home"
-                    element={<Home />}
-                />
+                <Route element={<Home />} path="/home" />
                 <Route element={<Login />} path="/" />
                 <Route element={<CadastroUsuario />} path="/cadastro" />
 

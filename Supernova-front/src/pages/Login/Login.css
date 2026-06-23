@@ -1,36 +1,36 @@
 /* Container da página inteira */
 .main_login {
     display: flex;
-    height: 100vh;
     width: 100%;
+    height: 100vh;
 }
 
-/* Lado esquerdo: Banner (A imagem de comida que você escolher) */
 .banner {
-    flex: 1;
-    background-color: #274699; /* Cor principal */
-    /* Se quiser uma imagem, descomente a linha abaixo: */
-    /* background: url('../../assets/img/sua-imagem.jpg') center/cover; */
+    width: 50%;
+    height: 100vh;
 }
 
-/* Lado direito: Formulário */
 .section_login {
-    flex: 1;
+    width: 50%;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    background-color: #FFFFFF;
-    /* padding: 20px; */
+    align-items: center;
+    background: #f5f5f5;
 }
 
 .form_login {
-    width: 100%;
-    max-width: 400px;
-    /* padding: 30px; */
-    background: #f9f9f9;
-    border-radius: 12px;    
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 600px;
+    max-width: 90%;
+    padding: 50px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.form_login h2 {
+    font-size: 42px;
+    margin-bottom: 30px;
 }
 
 .campo_input input {
@@ -41,18 +41,51 @@
     border-radius: 6px;
     box-sizing: border-box; }
 
-.botao {
+.botao,
+.botaoCadastro {
     width: 100%;
     padding: 12px;
-    background-color: #5CB6E7;
-    color: white;
-    border: none;
-    border-radius: 6px;
+    margin-top: 10px;
+    border: 2px solid #28489b;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #28489b;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.botao:hover,
+.botaoCadastro:hover {
+    background-color: #28489b;
+    color: white;
+}
+
+.botao {
+    text-align: center;
 }
 
 .botao:hover {
-    background-color: #274699;
+    background: #1d3573;
+}
+
+.banner {
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.logoSupernova {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.textoCadastro {
+    margin-top: 15px;
+    text-align: center;
+    color: #666;
 }
